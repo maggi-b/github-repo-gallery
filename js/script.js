@@ -6,6 +6,10 @@ const overview = document.querySelector(".overview");
 const username = "maggi-b";
 //ul to display the repos list
 const repoList = document.querySelector(".repo-list");
+//section with repos class (all repo information)
+const reposSection = document.querySelector(".repos");
+//section with repo-data class (individual repo data)
+const repoDataSection = document.querySelector(".repo-data");
 
 //API function to get user info from GitHub profile
 const gitUserInfo = async function () {
@@ -51,4 +55,44 @@ const displayRepoInfo = function (repos) {
     }
 };
 
+//event listener for when the user clicks on a repo name
+repoList.addEventListener("click", function (e) {
+    if (e.target.matches("h3")) {
+        const repoName = e.target.innerText;
+        getRepoInfo(repoName);
+    };
+});
 
+//function to get specific repo info
+const getRepoInfo = async function (repoName) {
+    const fetchRepo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+    const repoInfo = await fetchRepo.json();
+
+    console.log(repoInfo);
+
+    //Grab languages
+    const fetchLanguages = await fetch(repoInfo.languages_url);
+    const languageData = await fetchLanguages.json();
+    
+    //Making list of languages
+    const languages = [];
+    for (const language in languageData) {
+        languages.push(language);
+    }
+    displaySpecificRepoInfo(repoInfo, languages);
+};
+
+//function to display specific repo information
+const displaySpecificRepoInfo = function (repoInfo, languages) {
+    repoDataSection.innerHTML = "";
+    const div = document.createElement("div");
+    div.innerHTML = `<h3>Name: ${repoInfo.name}</h3>
+    <p>Description: ${repoInfo.description}</p>
+    <p>Default Branch: ${repoInfo.default_branch}</p>
+    <p>Languages: ${languages.join(", ")}</p>
+    <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`
+
+    repoDataSection.append(div);
+    repoDataSection.classList.remove("hide");
+    reposSection.classList.add("hide");
+};
