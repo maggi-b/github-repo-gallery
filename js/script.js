@@ -30,16 +30,17 @@ gitUserInfo();
 const displayUserInfo = function (data) {
     const div = document.createElement("div");
     div.classList.add("user-info");
-    div.innerHTML = `<figure>
-    <img alt="user avatar" src=${data.avatar_url} />
-  </figure>
-  <div>
-    <p><strong>Name:</strong> ${data.name}</p>
-    <p><strong>Bio:</strong> ${data.bio}</p>
-    <p><strong>Location:</strong> ${data.location}</p>
-    <p><strong>Number of public repos:</strong> ${data.public_repos}</p>
-  </div> `
-
+    div.innerHTML = `
+    <figure>
+        <img alt="user avatar" src=${data.avatar_url} />
+    </figure>
+    <div>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Bio:</strong> ${data.bio}</p>
+        <p><strong>Location:</strong> ${data.location}</p>
+        <p><strong>Number of public repos:</strong> ${data.public_repos}</p>
+    </div> 
+    `;
     overview.append(div);
     gitRepoList();
 };
@@ -93,12 +94,13 @@ const getRepoInfo = async function (repoName) {
 const displaySpecificRepoInfo = function (repoInfo, languages) {
     repoDataSection.innerHTML = "";
     const div = document.createElement("div");
-    div.innerHTML = `<h3>Name: ${repoInfo.name}</h3>
-    <p>Description: ${repoInfo.description}</p>
-    <p>Default Branch: ${repoInfo.default_branch}</p>
-    <p>Languages: ${languages.join(", ")}</p>
-    <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`
-
+    div.innerHTML = `
+        <h3>Name: ${repoInfo.name}</h3>
+        <p>Description: ${repoInfo.description}</p>
+        <p>Default Branch: ${repoInfo.default_branch}</p>
+        <p>Languages: ${languages.join(", ")}</p>
+        <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
+        `;
     repoDataSection.append(div);
     repoDataSection.classList.remove("hide");
     reposSection.classList.add("hide");
